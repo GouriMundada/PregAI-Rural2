@@ -1,18 +1,23 @@
 /// Data model representing patient input parameters
+/// Fully aligned with AI_Input_Parameters_2.docx
 class PatientData {
   final int? age;
   final int? gestationalAgeWeeks;
-  final int? systolicBp;
-  final int? diastolicBp;
-  final double? hemoglobin;
-  final double? bloodGlucoseValue;
-  final String bloodGlucoseType; // 'fasting', 'random', or 'post_ogtt'
-  final String urineProtein; // 'Negative', 'Trace', '1+', '2+', etc.
+  final int? gravidity;
+  final int? parity;
   final bool priorPreeclampsia;
   final bool priorGestationalDiabetes;
+  final bool priorCSection;
   final String plurality; // 'Singleton' or 'Twins+'
-  final int? fetalHeartRate;
+  final int? systolicBp;
+  final int? diastolicBp;
   final int? maternalHeartRate;
+  final int? fetalHeartRate;
+  final double? weight;
+  final double? hemoglobin;
+  final String urineProtein; // 'Negative', 'Trace', '1+', '2+', '3+', '4+'
+  final double? bloodGlucose;
+  final String bloodGlucoseType; // 'fasting', 'random', or 'post_ogtt'
   final bool decreasedFetalMovement;
   final bool severeHeadacheBlurredVision;
   final bool epigastricRuqPain;
@@ -22,17 +27,21 @@ class PatientData {
   PatientData({
     this.age,
     this.gestationalAgeWeeks,
-    this.systolicBp,
-    this.diastolicBp,
-    this.hemoglobin,
-    this.bloodGlucoseValue,
-    this.bloodGlucoseType = 'fasting',
-    this.urineProtein = 'Negative',
+    this.gravidity,
+    this.parity,
     this.priorPreeclampsia = false,
     this.priorGestationalDiabetes = false,
+    this.priorCSection = false,
     this.plurality = 'Singleton',
-    this.fetalHeartRate,
+    this.systolicBp,
+    this.diastolicBp,
     this.maternalHeartRate,
+    this.fetalHeartRate,
+    this.weight,
+    this.hemoglobin,
+    this.urineProtein = 'Negative',
+    this.bloodGlucose,
+    this.bloodGlucoseType = 'fasting',
     this.decreasedFetalMovement = false,
     this.severeHeadacheBlurredVision = false,
     this.epigastricRuqPain = false,
