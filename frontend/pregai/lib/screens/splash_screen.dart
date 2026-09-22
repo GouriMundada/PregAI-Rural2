@@ -94,9 +94,9 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                         ),
                         const SizedBox(height: AppMetrics.spaceL),
                         const Text(
-                          'PregAI Rural',
+                          'PregAI',
                           style: TextStyle(
-                            fontSize: 34,
+                            fontSize: 36,
                             fontWeight: FontWeight.w800,
                             color: AppColors.darkText,
                             letterSpacing: 0.5,
@@ -104,9 +104,9 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                         ),
                         const SizedBox(height: 6),
                         const Text(
-                          'AI-Powered Maternal Healthcare',
+                          'Maternal Care Assistant',
                           style: TextStyle(
-                            fontSize: 15,
+                            fontSize: 16,
                             fontWeight: FontWeight.w600,
                             color: AppColors.accentRed,
                           ),

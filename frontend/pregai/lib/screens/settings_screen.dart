@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../session/app_session.dart';
+import '../session/user_session.dart';
 import '../theme/app_theme.dart';
 import '../widgets/bottom_navigation.dart';
-import '../widgets/logout_dialog.dart';
+import '../widgets/logout_helper.dart';
 import '../widgets/section_header.dart';
 import 'sync_screen.dart';
 
@@ -68,7 +68,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  void _confirmLogout() => showLogoutConfirmation(context);
+  void _confirmLogout() => confirmLogout(context);
 
   @override
   Widget build(BuildContext context) {
@@ -82,8 +82,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
             _SettingsCard(children: [
               _SettingsTile(
                 icon: Icons.person_outline,
-                title: AppSession.userName.trim().isNotEmpty ? AppSession.userName.trim() : 'Profile',
-                subtitle: AppSession.currentRole?.label ?? 'Health worker account details',
+                title: UserSession.currentUserId.isNotEmpty ? UserSession.currentUserId : 'Profile',
+                subtitle: UserSession.currentRole?.label ?? 'Account details',
                 onTap: () => _showInfoDialog('Profile', 'Profile management is a demo placeholder.'),
               ),
             ]),
@@ -160,40 +160,29 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ]),
 
             const SizedBox(height: AppMetrics.spaceL),
-            Material(
-              color: AppColors.white,
-              borderRadius: BorderRadius.circular(AppMetrics.cardRadius),
-              child: InkWell(
+            const SectionHeader(title: 'Session', icon: Icons.logout_rounded),
+            _SettingsCard(children: [
+              _SettingsTile(
+                icon: Icons.logout_rounded,
+                title: 'Log Out',
+                subtitle: 'End this session and return to Sign In',
                 onTap: _confirmLogout,
-                borderRadius: BorderRadius.circular(AppMetrics.cardRadius),
-                child: Container(
-                  padding: const EdgeInsets.all(AppMetrics.spaceM),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(AppMetrics.cardRadius),
-                    border: Border.all(color: AppColors.danger.withValues(alpha: 0.25)),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(Icons.logout_rounded, color: AppColors.danger, size: 20),
-                      SizedBox(width: 10),
-                      Text(
-                        'Log Out',
-                        style: TextStyle(color: AppColors.danger, fontWeight: FontWeight.w700, fontSize: 16),
-                      ),
-                    ],
-                  ),
-                ),
               ),
-            ),
+            ]),
             const SizedBox(height: AppMetrics.spaceL),
           ],
         ),
       ),
-      bottomNavigationBar: AppBottomNavigation(
-        currentIndex: 4,
-        onTap: (index) => handleTabTap(context, index, 4),
-      ),
+      // The Patient role has no staff tabs (Patients/Risk browsing),
+      // so it doesn't get this shared bottom nav — see
+      // PatientDashboardScreen, which reuses this Settings screen via
+      // a plain pushNamed('/settings') instead.
+      bottomNavigationBar: UserSession.isPatient
+          ? null
+          : AppBottomNavigation(
+              currentIndex: 4,
+              onTap: (index) => handleTabTap(context, index, 4),
+            ),
     );
   }
 }

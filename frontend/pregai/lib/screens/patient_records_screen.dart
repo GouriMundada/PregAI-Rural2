@@ -7,9 +7,7 @@ import '../widgets/patient_card.dart';
 import 'patient_details_screen.dart';
 
 class PatientRecordsScreen extends StatefulWidget {
-  final RiskLevel? initialFilter;
-
-  const PatientRecordsScreen({super.key, this.initialFilter});
+  const PatientRecordsScreen({super.key});
 
   @override
   State<PatientRecordsScreen> createState() => _PatientRecordsScreenState();
@@ -18,12 +16,6 @@ class PatientRecordsScreen extends StatefulWidget {
 class _PatientRecordsScreenState extends State<PatientRecordsScreen> {
   String _query = '';
   RiskLevel? _filter;
-
-  @override
-  void initState() {
-    super.initState();
-    _filter = widget.initialFilter;
-  }
 
   List<Patient> get _filtered {
     return DummyData.patients.where((p) {

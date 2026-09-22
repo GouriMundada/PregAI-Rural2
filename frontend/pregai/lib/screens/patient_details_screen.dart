@@ -5,6 +5,7 @@ import '../widgets/app_button.dart';
 import '../widgets/patient_card.dart';
 import '../widgets/section_header.dart';
 import 'anc_entry_screen.dart';
+import 'personalized_diet_plan_screen.dart';
 import 'risk_assessment_screen.dart';
 
 class PatientDetailsScreen extends StatelessWidget {
@@ -26,66 +27,91 @@ class PatientDetailsScreen extends StatelessWidget {
               const SizedBox(height: AppMetrics.spaceL),
 
               const SectionHeader(
-                title: 'Personal Information',
+                title: 'Patient Information',
                 icon: Icons.badge_outlined,
               ),
               _InfoCard(rows: [
                 _InfoRow('Age', '${patient.age} years'),
                 _InfoRow('Phone', patient.phone),
                 _InfoRow('Address', patient.address),
+                _InfoRow('Preferred Language', patient.preferredLanguage),
               ]),
 
               const SizedBox(height: AppMetrics.spaceL),
               const SectionHeader(
-                title: 'Pregnancy Information',
+                title: 'Pregnancy',
                 icon: Icons.pregnant_woman_outlined,
               ),
               _InfoCard(rows: [
                 _InfoRow('LMP', patient.lmp),
-                _InfoRow('Gestational Age', patient.gestationalAge),
+                _InfoRow('Gestational Age', patient.gestationalAgeDisplay),
                 _InfoRow('EDD (from LMP)', patient.edd),
                 _InfoRow('Gravidity', '${patient.gravidity}'),
                 _InfoRow('Parity', '${patient.parity}'),
                 _InfoRow('Pregnancy Type', patient.pregnancyType.label),
-              ]),
-
-              const SizedBox(height: AppMetrics.spaceL),
-              const SectionHeader(
-                title: 'Obstetric History',
-                icon: Icons.history_edu_outlined,
-              ),
-              _InfoCard(rows: [
-                _InfoRow('Previous Preeclampsia', patient.previousPreeclampsia ? 'Yes' : 'No'),
-                _InfoRow('Previous Gestational Diabetes', patient.previousGestationalDiabetes ? 'Yes' : 'No'),
                 _InfoRow('Previous C-Section', patient.previousCSection ? 'Yes' : 'No'),
+                _InfoRow('Previous Preeclampsia', patient.previousPreeclampsia ? 'Yes' : 'No'),
+                _InfoRow(
+                  'Previous Gestational Diabetes',
+                  patient.previousGestationalDiabetes ? 'Yes' : 'No',
+                ),
               ]),
 
               const SizedBox(height: AppMetrics.spaceL),
               const SectionHeader(
-                title: 'Latest ANC Information',
-                icon: Icons.medical_information_outlined,
+                title: 'Maternal Measurements',
+                icon: Icons.monitor_heart_outlined,
               ),
               _InfoCard(rows: [
+                _InfoRow('Weight', patient.weightDisplay),
                 _InfoRow('Systolic BP', '${patient.systolicBP} mmHg'),
                 _InfoRow('Diastolic BP', '${patient.diastolicBP} mmHg'),
                 _InfoRow('Maternal Heart Rate', '${patient.maternalHeartRate} bpm'),
-                _InfoRow('Fetal Heart Rate', '${patient.fetalHeartRate} bpm'),
-                _InfoRow('Weight', patient.weight),
-                _InfoRow('Hemoglobin', patient.hemoglobin),
+                _InfoRow('Temperature', patient.temperatureDisplay),
+                _InfoRow('Hemoglobin', patient.hemoglobinDisplay),
                 _InfoRow('Urine Protein', patient.urineProtein.label),
+              ]),
+
+              const SizedBox(height: AppMetrics.spaceL),
+              const SectionHeader(
+                title: 'Blood Glucose',
+                icon: Icons.bloodtype_outlined,
+              ),
+              _InfoCard(rows: [
+                _InfoRow('Blood Glucose', '${patient.bloodGlucose} mg/dL'),
+                _InfoRow('Measurement Type', patient.glucoseMeasurementType.label),
+              ]),
+
+              const SizedBox(height: AppMetrics.spaceL),
+              const SectionHeader(
+                title: 'Fetal Assessment',
+                icon: Icons.child_friendly_outlined,
+              ),
+              _InfoCard(rows: [
+                _InfoRow('Fetal Heart Rate', '${patient.fetalHeartRate} bpm'),
                 _InfoRow(
-                  'Blood Glucose',
-                  '${patient.bloodGlucose} mg/dL (${patient.glucoseMeasurementType.label})',
+                  'Decreased Fetal Movement',
+                  patient.decreasedFetalMovement ? 'Yes' : 'No',
                 ),
-                _InfoRow('Latest Visit', patient.lastAncVisit),
+              ]),
+
+              const SizedBox(height: AppMetrics.spaceL),
+              const SectionHeader(
+                title: 'Warning Symptoms',
+                icon: Icons.warning_amber_rounded,
+              ),
+              _InfoCard(rows: [
+                _InfoRow(
+                  'Severe Headache/Blurred Vision',
+                  patient.severeHeadacheOrBlurredVision ? 'Yes' : 'No',
+                ),
+                _InfoRow('Epigastric/RUQ Pain', patient.epigastricOrRuqPain ? 'Yes' : 'No'),
+                _InfoRow('Vaginal Bleeding', patient.vaginalBleeding ? 'Yes' : 'No'),
+                _InfoRow('Fluid Leakage', patient.fluidLeakage ? 'Yes' : 'No'),
               ]),
 
               if (patient.hasWarningSigns) ...[
-                const SizedBox(height: AppMetrics.spaceL),
-                const SectionHeader(
-                  title: 'Warning Signs',
-                  icon: Icons.warning_amber_rounded,
-                ),
+                const SizedBox(height: AppMetrics.spaceM),
                 Container(
                   width: double.infinity,
                   padding: const EdgeInsets.all(AppMetrics.spaceM),
@@ -115,6 +141,14 @@ class PatientDetailsScreen extends StatelessWidget {
                 ),
               ],
 
+              const SizedBox(height: AppMetrics.spaceL),
+              const SectionHeader(
+                title: 'Latest ANC Visit',
+                icon: Icons.medical_information_outlined,
+              ),
+              _InfoCard(rows: [
+                _InfoRow('Latest Visit', patient.lastAncVisit),
+              ]),
 
               const SizedBox(height: AppMetrics.spaceL),
               const SectionHeader(
@@ -162,6 +196,17 @@ class PatientDetailsScreen extends StatelessWidget {
                 onPressed: () => Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (_) => RiskAssessmentScreen(patient: patient),
+                  ),
+                ),
+              ),
+              const SizedBox(height: AppMetrics.spaceM),
+              AppButton(
+                label: 'Nutrition Guidance',
+                icon: Icons.restaurant_menu_rounded,
+                type: AppButtonType.secondary,
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => PersonalizedDietPlanScreen(patient: patient),
                   ),
                 ),
               ),
@@ -226,7 +271,7 @@ class _ProfileHeader extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'Age ${patient.age}  •  GA ${patient.gestationalAge}',
+                  'Age ${patient.age}  •  GA ${patient.gestationalAgeDisplay}',
                   style: TextStyle(color: Colors.white.withValues(alpha: 0.9), fontSize: 14),
                 ),
               ],

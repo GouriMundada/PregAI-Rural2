@@ -1,22 +1,15 @@
 import 'package:flutter/material.dart';
-import '../session/app_session.dart';
 import '../theme/app_theme.dart';
 import '../widgets/action_card.dart';
 import '../widgets/bottom_navigation.dart';
-import '../widgets/logout_dialog.dart';
+import '../widgets/logout_helper.dart';
 import 'patient_registration_screen.dart';
 import 'anc_entry_screen.dart';
 import 'patient_records_screen.dart';
 import 'risk_assessment_screen.dart';
 import 'health_guidance_screen.dart';
-import 'sync_screen.dart';
-import 'settings_screen.dart';
+import 'reports_screen.dart';
 
-/// ASHA / Health Worker dashboard. This is the "ASHA Dashboard" from
-/// the required flow — kept as HomeScreen/home_screen.dart since that
-/// file already served exactly this purpose before the login/role
-/// changes; no separate asha_dashboard.dart was created to avoid a
-/// duplicate screen.
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -25,7 +18,7 @@ class HomeScreen extends StatelessWidget {
     final actions = [
       _QuickAction(
         icon: Icons.person_add_alt_1_rounded,
-        title: 'Register Patient',
+        title: 'Patient Registration',
         subtitle: 'Register a new patient',
         onTap: () => Navigator.of(context).push(
           MaterialPageRoute(builder: (_) => const PatientRegistrationScreen()),
@@ -33,7 +26,7 @@ class HomeScreen extends StatelessWidget {
       ),
       _QuickAction(
         icon: Icons.medical_services_outlined,
-        title: 'ANC Assessment',
+        title: 'ANC Entry',
         subtitle: 'Enter antenatal care details',
         onTap: () => Navigator.of(context).push(
           MaterialPageRoute(builder: (_) => const AncEntryScreen()),
@@ -58,25 +51,12 @@ class HomeScreen extends StatelessWidget {
         onTap: () => Navigator.of(context).pushNamed('/health-guidance'),
       ),
       _QuickAction(
-        icon: Icons.sync_rounded,
-        title: 'Sync Data',
-        subtitle: 'Sync records when online',
+        icon: Icons.analytics_outlined,
+        title: 'Reports',
+        subtitle: 'View health summaries',
         onTap: () => Navigator.of(context).push(
-          MaterialPageRoute(builder: (_) => const SyncScreen()),
+          MaterialPageRoute(builder: (_) => const ReportsScreen()),
         ),
-      ),
-      _QuickAction(
-        icon: Icons.settings_outlined,
-        title: 'Settings',
-        subtitle: 'App preferences & account',
-        onTap: () => Navigator.of(context).pushNamed('/settings'),
-      ),
-      _QuickAction(
-        icon: Icons.logout_rounded,
-        title: 'Logout',
-        subtitle: 'Sign out of this session',
-        iconColor: AppColors.danger,
-        onTap: () => showLogoutConfirmation(context),
       ),
     ];
 
@@ -120,7 +100,6 @@ class HomeScreen extends StatelessWidget {
                       icon: action.icon,
                       title: action.title,
                       subtitle: action.subtitle,
-                      iconColor: action.iconColor,
                       onTap: action.onTap,
                     );
                   },
@@ -168,39 +147,36 @@ class _Header extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  'Hello, ASHA Worker 👋',
+                  'Hello! 👋',
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 20,
+                    fontSize: 22,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
                 const SizedBox(height: 6),
                 const Text(
-                  'Maternal Healthcare Dashboard',
+                  'Welcome to PregAI',
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
-                if (AppSession.userName.trim().isNotEmpty) ...[
-                  const SizedBox(height: 2),
-                  Text(
-                    'Signed in as ${AppSession.userName.trim()}',
-                    style: TextStyle(
-                      color: Colors.white.withValues(alpha: 0.85),
-                      fontSize: 12,
-                    ),
-                    overflow: TextOverflow.ellipsis,
+                const SizedBox(height: 2),
+                Text(
+                  'Maternal Care Assistant',
+                  style: TextStyle(
+                    color: Colors.white.withValues(alpha: 0.9),
+                    fontSize: 14,
                   ),
-                ],
+                ),
               ],
             ),
           ),
           IconButton(
             tooltip: 'Log out',
-            onPressed: () => showLogoutConfirmation(context),
+            onPressed: () => confirmLogout(context),
             icon: Container(
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
@@ -220,7 +196,6 @@ class _QuickAction {
   final IconData icon;
   final String title;
   final String subtitle;
-  final Color? iconColor;
   final VoidCallback onTap;
 
   _QuickAction({
@@ -228,6 +203,5 @@ class _QuickAction {
     required this.title,
     required this.subtitle,
     required this.onTap,
-    this.iconColor,
   });
 }

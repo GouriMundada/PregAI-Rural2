@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../data/dummy_data.dart';
 import '../models/patient.dart';
 import '../theme/app_theme.dart';
+import '../utils/validators.dart';
 import '../widgets/app_button.dart';
 import '../widgets/app_text_field.dart';
 import '../widgets/section_header.dart';
@@ -174,6 +175,7 @@ class _PatientRegistrationScreenState extends State<PatientRegistrationScreen> {
                   isRequired: true,
                   keyboardType: TextInputType.number,
                   controller: _ageController,
+                  validator: Validators.numeric('Age'),
                 ),
                 AppTextField(
                   label: 'Phone Number',
@@ -218,6 +220,7 @@ class _PatientRegistrationScreenState extends State<PatientRegistrationScreen> {
                   isRequired: true,
                   keyboardType: TextInputType.number,
                   controller: _gestAgeController,
+                  validator: Validators.numeric('Gestational age'),
                 ),
                 AppTextField(
                   label: 'Expected Delivery Date (EDD)',
