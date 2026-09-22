@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../session/app_session.dart';
+import '../session/user_session.dart';
 import '../theme/app_theme.dart';
 
 /// Persistent bottom navigation used by the five main tab screens.
@@ -95,7 +95,7 @@ class _NavItem {
 /// way everywhere (replace, so the back stack doesn't pile up).
 void handleTabTap(BuildContext context, int index, int currentIndex) {
   if (index == currentIndex) return;
-  final homeRoute = AppSession.isDoctor ? '/doctor-home' : '/home';
+  final homeRoute = UserSession.isDoctor ? '/doctor-home' : '/home';
   final routes = [
     homeRoute,
     '/patient-records',

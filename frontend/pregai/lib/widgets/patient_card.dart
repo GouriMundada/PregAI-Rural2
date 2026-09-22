@@ -112,7 +112,12 @@ class PatientCard extends StatelessWidget {
                     Text(patient.name, style: Theme.of(context).textTheme.titleMedium),
                     const SizedBox(height: 4),
                     Text(
-                      'Age: ${patient.age}  •  GA: ${patient.gestationalAge}',
+                      'Age: ${patient.age}  •  GA: ${patient.gestationalAgeDisplay}',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      'BP: ${patient.bloodPressureDisplay}',
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     const SizedBox(height: 2),

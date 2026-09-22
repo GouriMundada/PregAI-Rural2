@@ -1,6 +1,5 @@
-/// Risk classification used throughout the UI.
-/// Kept as an enum so backend integration later can simply map
-/// a real ML/risk-engine result onto these same three values.
+/// Risk classification produced by the existing rule-based maternal
+/// safety engine.
 enum RiskLevel { low, medium, high }
 
 extension RiskLevelX on RiskLevel {
@@ -21,8 +20,8 @@ extension RiskLevelX on RiskLevel {
 ///
 /// NOTE ON DATA GRANULARITY:
 /// Blood pressure and blood glucose are intentionally stored as separate,
-/// specific fields (rather than one combined string) because the backend
-/// and downstream risk/ML logic need each value independently:
+/// specific fields (rather than one combined string) because the
+/// rule-based safety engine needs each value independently:
 ///   - systolicBP / diastolicBP instead of a single "BP" string
 ///   - bloodGlucose + glucoseMeasurementType instead of a bare "sugar" value
 class Patient {
@@ -42,7 +41,11 @@ class Patient {
   final bool previousCSection;
 
   final String lmp;
-  final String gestationalAge;
+
+  /// Gestational age in completed weeks. Stored as a number (not a
+  /// "24 weeks" display string) so the rule-based engine can use it
+  /// directly. Use [gestationalAgeDisplay] for the formatted UI string.
+  final int gestationalAge;
   final String edd; // calculated from LMP (Naegele's rule), not manually entered
   final String lastAncVisit;
 
@@ -52,11 +55,19 @@ class Patient {
   final int diastolicBP;
   final int maternalHeartRate; // bpm
   final int fetalHeartRate; // bpm
-  final String weight;
-  final double temperature; // °F
 
-  // Labs
-  final String hemoglobin;
+  /// Weight in kilograms, stored as a plain number (not a "58 kg"
+  /// display string). Use [weightDisplay] for the formatted UI string.
+  final double weight;
+
+  /// Body temperature in Celsius, entered directly as Celsius on the
+  /// ANC form (e.g. 36.7 = 36.7°C). Use [temperatureDisplay] for the
+  /// formatted UI string.
+  final double temperature; // °C
+
+  // Labs — hemoglobin stored as a plain number (not a "11.4 g/dL"
+  // display string); use [hemoglobinDisplay] for the formatted value.
+  final double hemoglobin; // g/dL
   final UrineProtein urineProtein;
   final int bloodGlucose; // mg/dL
   final GlucoseMeasurementType glucoseMeasurementType;
@@ -65,8 +76,8 @@ class Patient {
   final List<String> symptoms;
 
   // Warning / danger signs — tracked individually so each can trigger
-  // its own alert logic on the backend rather than being buried in
-  // free-text notes.
+  // its own alert logic in the rule-based engine rather than being
+  // buried in free-text notes.
   final bool decreasedFetalMovement;
   final bool severeHeadacheOrBlurredVision;
   final bool epigastricOrRuqPain;
@@ -95,7 +106,7 @@ class Patient {
     this.maternalHeartRate = 78,
     this.fetalHeartRate = 140,
     required this.weight,
-    this.temperature = 98.6,
+    this.temperature = 37.0,
     required this.hemoglobin,
     this.urineProtein = UrineProtein.negative,
     required this.bloodGlucose,
@@ -113,6 +124,24 @@ class Patient {
   /// The underlying systolic/diastolic values remain separate.
   String get bloodPressureDisplay => '$systolicBP/$diastolicBP mmHg';
 
+  /// Formatted "24 weeks" string for UI display.
+  String get gestationalAgeDisplay => '$gestationalAge weeks';
+
+  /// Formatted "58 kg" string for UI display.
+  String get weightDisplay => '${_trimNum(weight)} kg';
+
+  /// Formatted "11.4 g/dL" string for UI display.
+  String get hemoglobinDisplay => '${_trimNum(hemoglobin)} g/dL';
+
+  /// Formatted "37.0°C" string for UI display.
+  String get temperatureDisplay => '${temperature.toStringAsFixed(1)}°C';
+
+  static String _trimNum(double value) {
+    return value == value.roundToDouble()
+        ? value.toStringAsFixed(0)
+        : value.toStringAsFixed(1);
+  }
+
   /// Any of the five danger-sign flags is true.
   bool get hasWarningSigns =>
       decreasedFetalMovement ||
@@ -123,8 +152,8 @@ class Patient {
 
   List<String> get activeWarningSigns => [
         if (decreasedFetalMovement) 'Decreased Fetal Movement',
-        if (severeHeadacheOrBlurredVision) 'Severe Headache / Blurred Vision',
-        if (epigastricOrRuqPain) 'Epigastric / RUQ Pain',
+        if (severeHeadacheOrBlurredVision) 'Severe Headache/Blurred Vision',
+        if (epigastricOrRuqPain) 'Epigastric/RUQ Pain',
         if (vaginalBleeding) 'Vaginal Bleeding',
         if (fluidLeakage) 'Fluid Leakage',
       ];
@@ -138,7 +167,7 @@ extension PregnancyTypeX on PregnancyType {
       case PregnancyType.singleton:
         return 'Singleton';
       case PregnancyType.twinsOrMore:
-        return 'Twins / Multiple';
+        return 'Twins or More';
     }
   }
 }
@@ -174,7 +203,7 @@ extension GlucoseMeasurementTypeX on GlucoseMeasurementType {
       case GlucoseMeasurementType.random:
         return 'Random';
       case GlucoseMeasurementType.twoHourPostGlucose:
-        return '2-Hour Post-Glucose';
+        return '2-hour post-glucose';
     }
   }
 }

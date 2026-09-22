@@ -110,7 +110,7 @@ class RiskResultScreen extends StatelessWidget {
               const SizedBox(height: AppMetrics.spaceL),
               const SectionHeader(title: 'Key Indicators', icon: Icons.list_alt_rounded),
               _IndicatorTile(label: 'Blood Pressure', value: patient.bloodPressureDisplay, icon: Icons.speed_outlined),
-              _IndicatorTile(label: 'Hemoglobin', value: patient.hemoglobin, icon: Icons.water_drop_outlined),
+              _IndicatorTile(label: 'Hemoglobin', value: patient.hemoglobinDisplay, icon: Icons.water_drop_outlined),
               _IndicatorTile(
                 label: 'Symptoms',
                 value: patient.symptoms.isEmpty ? 'None reported' : patient.symptoms.join(', '),
@@ -118,7 +118,7 @@ class RiskResultScreen extends StatelessWidget {
               ),
               _IndicatorTile(
                 label: 'Gestational Age',
-                value: patient.gestationalAge,
+                value: patient.gestationalAgeDisplay,
                 icon: Icons.timelapse_outlined,
               ),
               _IndicatorTile(label: 'Urine Protein', value: patient.urineProtein.label, icon: Icons.opacity_outlined),

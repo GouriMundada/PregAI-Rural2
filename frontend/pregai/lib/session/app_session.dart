@@ -1,5 +1,5 @@
-/// The two supported user modes, per the login/role-select flow.
-enum UserRole { asha, doctor }
+/// The three supported user modes, per the login/role-select flow.
+enum UserRole { asha, doctor, patient }
 
 extension UserRoleX on UserRole {
   String get label {
@@ -8,6 +8,8 @@ extension UserRoleX on UserRole {
         return 'ASHA / Health Worker';
       case UserRole.doctor:
         return 'Doctor';
+      case UserRole.patient:
+        return 'Patient';
     }
   }
 
@@ -17,6 +19,8 @@ extension UserRoleX on UserRole {
         return 'ASHA Worker';
       case UserRole.doctor:
         return 'Doctor';
+      case UserRole.patient:
+        return 'Patient';
     }
   }
 }
@@ -38,6 +42,7 @@ class AppSession {
   static bool get isLoggedIn => currentRole != null;
   static bool get isDoctor => currentRole == UserRole.doctor;
   static bool get isAsha => currentRole == UserRole.asha;
+  static bool get isPatient => currentRole == UserRole.patient;
 
   /// Friendly greeting name for dashboards, falling back to the role
   /// label if the user didn't type a name at login.

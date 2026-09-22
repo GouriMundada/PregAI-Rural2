@@ -6,20 +6,20 @@ import 'package:flutter/material.dart';
 class AppColors {
   AppColors._();
 
-  static const Color primary = Color(0xFFD62839); // Deep Red
-  static const Color secondary = Color(0xFFE85D75); // Primary Pink
-  static const Color accentRed = Color(0xFFB71C1C); // Emergency Red
+  static const Color primary = Color(0xFFE91E63); // Deep Pink
+  static const Color secondary = Color(0xFFFF4081); // Bright Pink
+  static const Color accentRed = Color(0xFFD81B60);
 
-  static const Color lightPink = Color(0xFFFDECEF);
-  static const Color veryLightPink = Color(0xFFFFF5F7); // Soft Pink
+  static const Color lightPink = Color(0xFFFFF0F5);
+  static const Color veryLightPink = Color(0xFFFFF7FA);
 
   static const Color white = Color(0xFFFFFFFF);
-  static const Color darkText = Color(0xFF3A2025);
+  static const Color darkText = Color(0xFF2D2D2D);
   static const Color greyText = Color(0xFF757575);
 
   static const Color success = Color(0xFF2E7D32);
   static const Color warning = Color(0xFFF9A825);
-  static const Color danger = Color(0xFFB71C1C); // Emergency Red
+  static const Color danger = Color(0xFFC62828);
 
   // Convenience gradient used across headers / splash / hero cards.
   static const LinearGradient primaryGradient = LinearGradient(

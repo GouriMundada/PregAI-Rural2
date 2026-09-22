@@ -40,6 +40,6 @@ Future<void> showLogoutConfirmation(BuildContext context) async {
 
   if (confirmed == true && context.mounted) {
     AppSession.logout();
-    Navigator.of(context).pushNamedAndRemoveUntil('/login', (route) => false);
+    Navigator.of(context).pushNamedAndRemoveUntil('/select-role', (route) => false);
   }
 }

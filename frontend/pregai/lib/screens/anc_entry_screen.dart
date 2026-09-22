@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../data/dummy_data.dart';
 import '../models/patient.dart';
 import '../theme/app_theme.dart';
+import '../utils/validators.dart';
 import '../widgets/app_button.dart';
 import '../widgets/app_text_field.dart';
 import '../widgets/section_header.dart';
@@ -23,10 +24,10 @@ class _AncEntryScreenState extends State<AncEntryScreen> {
   final _visitNumberController = TextEditingController();
 
   // Blood pressure is captured as two separate fields — systolic and
-  // diastolic — rather than one combined string, since the database
-  // and risk/ML logic need each value independently.
+  // diastolic — rather than one combined string, per the data dictionary.
   final _systolicController = TextEditingController();
   final _diastolicController = TextEditingController();
+
   final _weightController = TextEditingController();
   final _maternalHeartRateController = TextEditingController();
   final _fetalHeartRateController = TextEditingController();
@@ -147,6 +148,7 @@ class _AncEntryScreenState extends State<AncEntryScreen> {
                   isRequired: true,
                   keyboardType: TextInputType.number,
                   controller: _gestAgeController,
+                  validator: Validators.numeric('Gestational age'),
                 ),
                 AppTextField(
                   label: 'ANC Visit Number',
@@ -174,6 +176,7 @@ class _AncEntryScreenState extends State<AncEntryScreen> {
                         hint: 'mmHg',
                         keyboardType: TextInputType.number,
                         controller: _systolicController,
+                        validator: Validators.numeric('Systolic BP'),
                       ),
                     ),
                     const SizedBox(width: AppMetrics.spaceM),
@@ -185,6 +188,7 @@ class _AncEntryScreenState extends State<AncEntryScreen> {
                         hint: 'mmHg',
                         keyboardType: TextInputType.number,
                         controller: _diastolicController,
+                        validator: Validators.numeric('Diastolic BP'),
                       ),
                     ),
                   ],
@@ -195,6 +199,7 @@ class _AncEntryScreenState extends State<AncEntryScreen> {
                   isRequired: true,
                   keyboardType: TextInputType.number,
                   controller: _maternalHeartRateController,
+                  validator: Validators.numeric('Maternal heart rate'),
                 ),
                 AppTextField(
                   label: 'Fetal Heart Rate (bpm)',
@@ -202,6 +207,7 @@ class _AncEntryScreenState extends State<AncEntryScreen> {
                   isRequired: true,
                   keyboardType: TextInputType.number,
                   controller: _fetalHeartRateController,
+                  validator: Validators.numeric('Fetal heart rate'),
                 ),
                 AppTextField(
                   label: 'Weight (kg)',
@@ -209,12 +215,14 @@ class _AncEntryScreenState extends State<AncEntryScreen> {
                   isRequired: true,
                   keyboardType: const TextInputType.numberWithOptions(decimal: true),
                   controller: _weightController,
+                  validator: Validators.numeric('Weight'),
                 ),
                 AppTextField(
-                  label: 'Temperature (°F)',
+                  label: 'Temperature (°C)',
                   icon: Icons.thermostat_outlined,
                   keyboardType: const TextInputType.numberWithOptions(decimal: true),
                   controller: _tempController,
+                  validator: Validators.numeric('Temperature', required: false),
                 ),
 
                 const SizedBox(height: AppMetrics.spaceM),
@@ -227,6 +235,7 @@ class _AncEntryScreenState extends State<AncEntryScreen> {
                   icon: Icons.water_drop_outlined,
                   keyboardType: const TextInputType.numberWithOptions(decimal: true),
                   controller: _hemoglobinController,
+                  validator: Validators.numeric('Hemoglobin', required: false),
                 ),
                 AppDropdownField<UrineProtein>(
                   label: 'Urine Protein',
@@ -247,6 +256,7 @@ class _AncEntryScreenState extends State<AncEntryScreen> {
                   isRequired: true,
                   keyboardType: TextInputType.number,
                   controller: _bloodGlucoseController,
+                  validator: Validators.numeric('Blood glucose'),
                 ),
                 AppDropdownField<GlucoseMeasurementType>(
                   label: 'Measurement Type',
@@ -303,12 +313,12 @@ class _AncEntryScreenState extends State<AncEntryScreen> {
                       onChanged: (v) => setState(() => _decreasedFetalMovement = v),
                     ),
                     _WarningToggle(
-                      label: 'Severe Headache / Blurred Vision',
+                      label: 'Severe Headache/Blurred Vision',
                       value: _severeHeadacheOrBlurredVision,
                       onChanged: (v) => setState(() => _severeHeadacheOrBlurredVision = v),
                     ),
                     _WarningToggle(
-                      label: 'Epigastric / RUQ Pain',
+                      label: 'Epigastric/RUQ Pain',
                       value: _epigastricOrRuqPain,
                       onChanged: (v) => setState(() => _epigastricOrRuqPain = v),
                     ),

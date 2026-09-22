@@ -96,7 +96,7 @@ class _RiskAssessmentScreenState extends State<RiskAssessmentScreen> {
                       children: [
                         Text(_selectedPatient.name, style: Theme.of(context).textTheme.titleMedium),
                         Text(
-                          'Age ${_selectedPatient.age}  •  GA ${_selectedPatient.gestationalAge}',
+                          'Age ${_selectedPatient.age}  •  GA ${_selectedPatient.gestationalAgeDisplay}',
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                       ],
@@ -228,7 +228,7 @@ class _ParamGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     final params = [
       ('Blood Pressure', patient.bloodPressureDisplay, Icons.speed_outlined),
-      ('Hemoglobin', patient.hemoglobin, Icons.water_drop_outlined),
+      ('Hemoglobin', patient.hemoglobinDisplay, Icons.water_drop_outlined),
       (
         'Blood Glucose',
         '${patient.bloodGlucose} mg/dL (${patient.glucoseMeasurementType.label})',
@@ -236,8 +236,9 @@ class _ParamGrid extends StatelessWidget {
       ),
       ('Urine Protein', patient.urineProtein.label, Icons.opacity_outlined),
       ('Fetal Heart Rate', '${patient.fetalHeartRate} bpm', Icons.child_friendly_outlined),
-      ('Weight', patient.weight, Icons.monitor_weight_outlined),
-      ('Gestational Age', patient.gestationalAge, Icons.timelapse_outlined),
+      ('Weight', patient.weightDisplay, Icons.monitor_weight_outlined),
+      ('Temperature', patient.temperatureDisplay, Icons.thermostat_outlined),
+      ('Gestational Age', patient.gestationalAgeDisplay, Icons.timelapse_outlined),
     ];
 
     return GridView.builder(
