@@ -97,31 +97,78 @@ class _PatientRegistrationScreenState extends State<PatientRegistrationScreen> {
   }
 
   Future<void> _savePatient() async {
-    if (!_formKey.currentState!.validate()) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill in all required fields.')),
-      );
-      return;
-    }
+  if (!_formKey.currentState!.validate()) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Please fill in all required fields.'),
+      ),
+    );
+    return;
+  }
 
-    setState(() => _isSaving = true);
-    await Future.delayed(const Duration(milliseconds: 800));
+  if (_preferredLanguage == null ||
+      _gravidity == null ||
+      _parity == null) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Please complete all required selections.'),
+      ),
+    );
+    return;
+  }
+
+  setState(() => _isSaving = true);
+
+  try {
+    final repository = PatientRepository();
+
+    await repository.saveRegistration(
+      name: _nameController.text.trim(),
+      age: int.parse(_ageController.text.trim()),
+      phone: _phoneController.text.trim(),
+      address: _addressController.text.trim(),
+      preferredLanguage: _preferredLanguage!,
+      lmp: _lmpController.text.trim(),
+      gestationalAgeWeeks: int.parse(_gestAgeController.text.trim()),
+      edd: _eddController.text.trim(),
+      gravidity: _gravidity!,
+      parity: _parity!,
+      pregnancyType: _pregnancyType.name,
+      previousPreeclampsia: _previousPreeclampsia,
+      previousGestationalDiabetes: _previousGdm,
+      previousCSection: _previousCSection,
+      emergencyContactName: _emergencyNameController.text.trim(),
+      emergencyContactPhone: _emergencyPhoneController.text.trim(),
+      emergencyContactRelationship: _relationship ?? '',
+      notes: _notesController.text.trim(),
+    );
+
     if (!mounted) return;
+
     setState(() => _isSaving = false);
 
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
         icon: Container(
           padding: const EdgeInsets.all(12),
           decoration: const BoxDecoration(
             color: AppColors.lightPink,
             shape: BoxShape.circle,
           ),
-          child: const Icon(Icons.check_circle_rounded, color: AppColors.success, size: 40),
+          child: const Icon(
+            Icons.check_circle_rounded,
+            color: AppColors.success,
+            size: 40,
+          ),
         ),
-        title: const Text('Success', textAlign: TextAlign.center),
+        title: const Text(
+          'Success',
+          textAlign: TextAlign.center,
+        ),
         content: const Text(
           'Patient information entered successfully',
           textAlign: TextAlign.center,
@@ -140,7 +187,18 @@ class _PatientRegistrationScreenState extends State<PatientRegistrationScreen> {
         ],
       ),
     );
+  } catch (e) {
+    if (!mounted) return;
+
+    setState(() => _isSaving = false);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Failed to save patient: $e'),
+      ),
+    );
   }
+}
 
   @override
   Widget build(BuildContext context) {
