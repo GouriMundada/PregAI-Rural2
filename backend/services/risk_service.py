@@ -12,12 +12,15 @@ def assess(patient, pregnancy, anc_visit):
     ai_input = {
         "age": patient["age"],
         "gestational_age_weeks": pregnancy.get("gestational_age_weeks"),
+        "gravidity": pregnancy.get("gravidity"),
+        "parity": pregnancy.get("parity"),
         "systolic_bp": anc_visit["systolic_bp"],
         "diastolic_bp": anc_visit["diastolic_bp"],
         "maternal_heart_rate": anc_visit.get("maternal_heart_rate"),
         "fetal_heart_rate": anc_visit.get("fetal_heart_rate"),
+        "weight": anc_visit.get("weight"),
         "hemoglobin": anc_visit.get("hemoglobin"),
-        "blood_glucose_value": anc_visit.get("blood_glucose"),
+        "blood_glucose": anc_visit.get("blood_glucose"),
         # Preserve the AI engine's documented defaults when optional ANC
         # measurements are not collected for this visit.
         "blood_glucose_type": anc_visit.get("blood_glucose_type") or "fasting",
