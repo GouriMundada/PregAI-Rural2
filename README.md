@@ -109,13 +109,13 @@ The application follows a simple user journey:
 ## 📱 APPLICATION SCREENSHOTS
 
 ### 1. Patient Details Dashboard
-![Patient Details](screenshots/patient-details-dashboard.jpg)
+![Patient Details](screenshots/patient-details-dashboard.jpeg)
 
 ### 2. Pregnancy Risk Assessment Result
-![Risk Assessment](screenshots/pregnancy-risk-assessment-result.jpg)
+![Risk Assessment](screenshots/pregnancy-risk-assessment-result.jpeg)
 
 ### 3. Detailed Risk Indicators
-![Risk Indicators](screenshots/detailed-risk-indicators.jpg)
+![Risk Indicators](screenshots/detailed-risk-indicators.jpeg)
 
 ### 4. Data Synchronization
-![Data Synchronization](screenshots/data-synchronization.jpg)
+![Data Synchronization](screenshots/data-synchronization.jpeg)
