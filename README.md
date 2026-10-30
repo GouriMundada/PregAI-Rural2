@@ -104,3 +104,18 @@ The application follows a simple user journey:
               |
               v
     PERSONALIZED MEAL SUGGESTIONS
+
+
+## 📱 APPLICATION SCREENSHOTS
+
+### 1. Patient Details Dashboard
+![Patient Details](screenshots/patient-details-dashboard.jpg)
+
+### 2. Pregnancy Risk Assessment Result
+![Risk Assessment](screenshots/pregnancy-risk-assessment-result.jpg)
+
+### 3. Detailed Risk Indicators
+![Risk Indicators](screenshots/detailed-risk-indicators.jpg)
+
+### 4. Data Synchronization
+![Data Synchronization](screenshots/data-synchronization.jpg)
